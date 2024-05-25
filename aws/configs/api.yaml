@@ -1,0 +1,455 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "PromptArt API"
+schemes:
+- "https"
+paths:
+  /doc/create:
+    post:
+      operationId: "createDoc"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "DocDetails"
+        required: true
+        schema:
+          $ref: "#/definitions/DocDetails"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/DocDetails"
+  /doc/enumerate:
+    get:
+      operationId: "enumDocs"
+      parameters:
+      - name: "query"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /doc/media/{mid}:
+    get:
+      operationId: "getDocMedia"
+      parameters:
+      - name: "mid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /doc/{did}:
+    delete:
+      operationId: "deleteDoc"
+      parameters:
+      - name: "did"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /doc/{did}/update:
+    put:
+      operationId: "updateDoc"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "did"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "DocDetails"
+        required: true
+        schema:
+          $ref: "#/definitions/DocDetails"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/DocDetails"
+  /doc/{did}/{format}:
+    get:
+      operationId: "getFormattedDoc"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "did"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "format"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/DocDetails"
+  /graph/attach:
+    post:
+      operationId: "createFeed"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "TransformerDetails"
+        required: true
+        schema:
+          $ref: "#/definitions/TransformerDetails"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/TransformerDetails"
+  /graph/enumerate:
+    get:
+      operationId: "enumFeeds"
+      parameters:
+      - name: "query"
+        in: "query"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /graph/status/{gid}:
+    get:
+      operationId: "genFeedStatus"
+      parameters:
+      - name: "gid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /graph/{fid}:
+    get:
+      operationId: "getFeed"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "fid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/TransformerDetails"
+    delete:
+      operationId: "deleteFeed"
+      parameters:
+      - name: "fid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /graph/{fid}/docs:
+    get:
+      operationId: "getMyFeedDocs"
+      parameters:
+      - name: "since"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "uid"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "fid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /graph/{fid}/generate:
+    get:
+      operationId: "genFeedDocs"
+      parameters:
+      - name: "maxnum"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "uid"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "fid"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "since"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "freq"
+        in: "query"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /graph/{fid}/update:
+    put:
+      operationId: "updateFeed"
+      consumes:
+      - "application/json"
+      parameters:
+      - name: "fid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "TransformerDetails"
+        required: true
+        schema:
+          $ref: "#/definitions/TransformerDetails"
+      responses:
+        "200":
+          description: "200 response"
+  /transformer/create:
+    post:
+      operationId: "composeTransformer"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "TransformerDetails"
+        required: true
+        schema:
+          $ref: "#/definitions/TransformerDetails"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/TransformerDetails"
+  /transformer/enumerate:
+    get:
+      operationId: "enumTransformers"
+      parameters:
+      - name: "query"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /transformer/{tid}:
+    get:
+      operationId: "getTransformer"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "tid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/TransformerDetails"
+    delete:
+      operationId: "deleteTransformer"
+      parameters:
+      - name: "tid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /transformer/{tid}/apply:
+    put:
+      operationId: "applyTransformer"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "tid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "DocDetails"
+        required: true
+        schema:
+          $ref: "#/definitions/DocDetails"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/DocDetails"
+  /transformer/{tid}/update:
+    put:
+      operationId: "updateTransformer"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "tid"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "TransformerDetails"
+        required: true
+        schema:
+          $ref: "#/definitions/TransformerDetails"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/TransformerDetails"
+  /user/create:
+    post:
+      operationId: "createUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "UserDetails"
+        required: true
+        schema:
+          $ref: "#/definitions/UserDetails"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/UserDetails"
+  /user/enumerate:
+    get:
+      operationId: "enumUsers"
+      parameters:
+      - name: "query"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /user/{uid}:
+    get:
+      operationId: "getUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "uid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/UserDetails"
+    delete:
+      operationId: "deleteUser"
+      parameters:
+      - name: "uid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+  /user/{uid}/credit:
+    put:
+      operationId: "updateUserBalance"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "delta"
+        in: "query"
+        required: true
+        type: "string"
+      - name: "uid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/UserDetails"
+  /user/{uid}/update:
+    put:
+      operationId: "updateUser"
+      parameters:
+      - name: "uid"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+definitions:
+  UserDetails:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      uid:
+        type: "string"
+      balance:
+        type: "number"
+  TransformerDetails:
+    type: "object"
+    properties:
+      tid:
+        type: "string"
+      cfg:
+        type: "object"
+        properties: {}
+      owner:
+        type: "string"
+      fees:
+        type: "object"
+        properties: {}
+      name:
+        type: "string"
+      description:
+        type: "string"
+      mapio:
+        type: "object"
+        properties: {}
+  DocDetails:
+    type: "object"
+    properties:
+      did:
+        type: "string"
+      status:
+        type: "string"
+      content:
+        type: "object"
+        properties: {}
+      parent_did:
+        type: "string"
+      owner:
+        type: "string"

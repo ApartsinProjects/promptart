@@ -1,0 +1,13 @@
+boto3
+sqlalchemy
+psycopg2-binary
+elevenlabs==0.2.18
+replicate==0.8.3
+pydantic==1.10.9
+urllib3==1.26.15
+jinja2
+openai
+feedparser
+google-search-results
+googlenews==1.6.8
+requests_oauthlib
