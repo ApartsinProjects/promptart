@@ -2,17 +2,35 @@ import uuid,psycopg2
 import psycopg2.extras
 import json
 from datetime import datetime
-import boto3
 import os
 
 def qstr(x): return f"'{json.dumps(x) if isinstance(x,dict) else str(x)}'"
 def drop_none(obj): return {k:v for k,v in obj.items() if v is not None}
 
+
+def _db_connection_string():
+    # Preferred: explicit DSN
+    dsn = os.getenv("PA_DB_DSN") or os.getenv("DATABASE_URL")
+    if dsn:
+        return dsn
+
+    # Fallback: PG* environment variables
+    host = os.getenv("PGHOST")
+    dbname = os.getenv("PGDATABASE")
+    user = os.getenv("PGUSER")
+    password = os.getenv("PGPASSWORD")
+    port = os.getenv("PGPORT", "5432")
+    if host and dbname and user and password:
+        return f"dbname='{dbname}' user='{user}' host='{host}' password='{password}' port='{port}'"
+
+    raise RuntimeError(
+        "Database credentials are not configured. "
+        "Set PA_DB_DSN (or DATABASE_URL), or PGHOST/PGDATABASE/PGUSER/PGPASSWORD."
+    )
+
 class Pdb:
     def __init__(self):
-        #dbconnection=json.loads(json.loads(boto3.client('secretsmanager').get_secret_value(**{'SecretId': os.getenv('db_connection')})['SecretString'])["db_connection"])
-        #self.con=psycopg2.connect(f"dbname='{dbconnection['dbname']}' user='{dbconnection['user']}' host='{dbconnection['host']}' password='{dbconnection['password']}'")
-        self.con=psycopg2.connect("dbname='promptart' user='sasha' host='promtart-free.cuqgeumuhzr3.us-east-1.rds.amazonaws.com' password='promptart'")
+        self.con=psycopg2.connect(_db_connection_string())
         self.cur=self.con.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
         
     def _stmt(self,sql_str): 

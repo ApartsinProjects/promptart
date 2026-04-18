@@ -1,16 +1,13 @@
 from requests_oauthlib import OAuth1Session
 import requests
+import os
 
 
-twitter_consumer_key = "IPwVDHqkFZZp3ReFQjzefkKBH"
-twitter_consumer_secret = "5lgvhQXAJSvRDZQjfO3t9eotStf3xtZmTij4dMkl7xQkYgUSN8"
-twitter_access_token = "1677629692516397056-D7UcKYbtRvm1x8ClvIlP0tH3sCbD8E"
-twitter_access_token_secret = "YMTFWFPbZT2CtiRsfiSXUauLmbGeMuHFglQgkTO6VHoRV"
-
-facebook_app_id = '790386739292928'
-facebook_app_secret = '1fbdba2c1b8aa8fdde6fdb235c3a64f9'
-facebook_page_id = '102184052964144'
-facebook_page_access_token = 'EAALO2kDUqwABABewD8rhC15NR5KZAVQLWEoCBMmhOmx7JTN5PkNHrklWrOaHRlIKnAXPRjqYkUIBZAzdfE1DJPk1ffLTPxtZCSzZARNCT2xirrBHHrpG3pkSxfLZCfbxbxceDFmWBCyZBdsjEYUwVEMKWhBcwsVfto4JFBtueeiQU6LQs4U1ZBA'
+def _env(name):
+    value = os.getenv(name)
+    if not value:
+        raise RuntimeError(f"Missing required environment variable: {name}")
+    return value
 
 
 
@@ -18,6 +15,8 @@ class FbConnector:
     
     @staticmethod
     def post_photo(message, file):
+        facebook_page_id = _env("FACEBOOK_PAGE_ID")
+        facebook_page_access_token = _env("FACEBOOK_PAGE_ACCESS_TOKEN")
         image_data = {
             'caption': message,
             'access_token': facebook_page_access_token
@@ -30,6 +29,8 @@ class FbConnector:
             
     @staticmethod
     def post_video(message, file):
+        facebook_page_id = _env("FACEBOOK_PAGE_ID")
+        facebook_page_access_token = _env("FACEBOOK_PAGE_ACCESS_TOKEN")
         video_data = {
             'description': message,
             'access_token': facebook_page_access_token
@@ -42,6 +43,8 @@ class FbConnector:
     
     @staticmethod
     def post_text(message):
+        facebook_page_id = _env("FACEBOOK_PAGE_ID")
+        facebook_page_access_token = _env("FACEBOOK_PAGE_ACCESS_TOKEN")
         text_data = {
             'message': message,
             'access_token': facebook_page_access_token
@@ -58,6 +61,10 @@ class TwConnector:
     def post_text(message):
         #payload = {"text": params["in_doc"]['ssText']}
         payload = {"text": message}
+        twitter_consumer_key = _env("TWITTER_CONSUMER_KEY")
+        twitter_consumer_secret = _env("TWITTER_CONSUMER_SECRET")
+        twitter_access_token = _env("TWITTER_ACCESS_TOKEN")
+        twitter_access_token_secret = _env("TWITTER_ACCESS_TOKEN_SECRET")
 
         auth = OAuth1Session(
             twitter_consumer_key,

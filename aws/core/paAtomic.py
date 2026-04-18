@@ -14,14 +14,28 @@ from core.paMedia import PAMedia
 import openai
 import os
 
-openai.api_key = "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"
-replicate_api_token = "r8_0ZnNAVC4riy7JOzHTy5vTaVOimPjTx80mLNW2"
-eleven_labs_token = "c0aa69e32683ac783cf5bcb27bbcee5b"
-tnl_api_key = '7463a2d2-287b-47f2-b8bf-3d0023beb872'
-stability_api_key = "sk-GFvNDa4LgHgtc4AJq0UU9kVUJxWm9rhUDtkmCLVMrA6rpnae"
-serp_api_key = "e3f66e22819c38ea5630ff66ed07d9566e6aaf8ded8c2b157fbd9ca06b71d6d2"
+def _first_env(*names):
+    for name in names:
+        value = os.getenv(name)
+        if value:
+            return value
+    return None
 
-elevenlabs.set_api_key(eleven_labs_token)
+
+def _require(name, value):
+    if not value:
+        raise RuntimeError(f"Missing required environment variable for adapter: {name}")
+    return value
+
+
+openai.api_key = _first_env("OPENAI_API_KEY")
+replicate_api_token = _first_env("REPLICATE_API_TOKEN")
+eleven_labs_token = _first_env("ELEVENLABS_API_KEY", "ELEVEN_LABS_API_KEY")
+stability_api_key = _first_env("STABILITY_API_KEY")
+serp_api_key = _first_env("SERPAPI_API_KEY", "SERP_API_KEY")
+
+if eleven_labs_token:
+    elevenlabs.set_api_key(eleven_labs_token)
 S3_BUCKET = os.getenv("S3_BUCKET_NAME", "promptart-media")
 
 
@@ -80,6 +94,7 @@ def elevenlabs_text2speech(params):
 
 
 def salesforce_image2text(params):
+    _require("REPLICATE_API_TOKEN", replicate_api_token)
     in_image_file = params["in_doc"]['bjImage']
     in_image = PAMedia().fetchBytes(in_image_file)
     res = replicate.Client(api_token=replicate_api_token) \
@@ -148,6 +163,7 @@ def google_news_source(params):
 
 
 def google_search_source(params):
+    _require("SERPAPI_API_KEY (or SERP_API_KEY)", serp_api_key)
     search_request = params["in_doc"]["ssText"]
     search = GoogleSearch({
         "q": search_request,
@@ -163,6 +179,7 @@ def google_search_source(params):
 
 
 def replicate_stable_diffusion_text2image(params):
+    _require("REPLICATE_API_TOKEN", replicate_api_token)
     prompt = params["in_doc"]['ssText']
     model_version = "stability-ai/stable-diffusion:db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf"
     response = replicate.Client(api_token=replicate_api_token).run(model_version, input={"prompt": prompt})
@@ -175,6 +192,7 @@ def replicate_stable_diffusion_text2image(params):
 
 
 def stability_stable_diffusion_text2image(params):
+    _require("STABILITY_API_KEY", stability_api_key)
     prompt = params["in_doc"]['ssText']
     engine_id = "stable-diffusion-v1-5"
     api_host = os.getenv('API_HOST', 'https://api.stability.ai')
