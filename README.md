@@ -1,174 +1,110 @@
 # PromptArt
 
 <p align="center">
-  <img src="docs/hero_promptart.png" alt="PromptArt hero" width="100%" />
+  <img src="docs/infographics/technical/hero_research_graph_v2.png" alt="Crowdsourced content transformation graph" width="100%" />
 </p>
 
-<p align="center"><strong>Content that evolves. Creativity that compounds. Value that returns to contributors.</strong></p>
+<p align="center"><strong>A graph-native system for crowdsourced GenAI content transformation, attribution, and value circulation.</strong></p>
+
+## Motivation
+Digital content ecosystems are structurally fragmented:
+- generation is powerful but often isolated,
+- lineage is weak across derivative outputs,
+- value distribution rarely reflects true contribution paths.
+
+PromptArt addresses this gap by treating generation, provenance, and settlement as one integrated graph process rather than separate products.
+
+## Vision
+PromptArt advances a **Crowdsourced Content Transformation Graph (CCTG)** in which:
+- source content, transformation operators, and generated artifacts coexist in one evolving network,
+- every transformation becomes a reusable graph edge,
+- attribution and economic flow are computed over the same graph paths that produce content.
+
+The long-term outcome is a creative infrastructure where personalization scales without disconnecting provenance and contributor upside.
 
 <p align="center">
-  <img alt="python" src="https://img.shields.io/badge/Python-3.9+-3776AB?style=flat-square&logo=python&logoColor=white" />
-  <img alt="aws-lambda" src="https://img.shields.io/badge/AWS-Lambda-FF9900?style=flat-square&logo=awslambda&logoColor=white" />
-  <img alt="api-gateway" src="https://img.shields.io/badge/AWS-API%20Gateway-FF4F8B?style=flat-square&logo=amazonapigateway&logoColor=white" />
-  <img alt="sqs" src="https://img.shields.io/badge/AWS-SQS-FF4F8B?style=flat-square&logo=amazonsqs&logoColor=white" />
-  <img alt="postgresql" src="https://img.shields.io/badge/PostgreSQL-Relational%20Store-336791?style=flat-square&logo=postgresql&logoColor=white" />
-  <img alt="s3" src="https://img.shields.io/badge/AWS-S3-569A31?style=flat-square&logo=amazons3&logoColor=white" />
-  <img alt="docker" src="https://img.shields.io/badge/Docker-Worker%20Runtime-2496ED?style=flat-square&logo=docker&logoColor=white" />
+  <img src="docs/infographics/technical/cctg_infographic_gemini_v1.png" alt="Vision infographic: connected transformation graph" width="100%" />
 </p>
+
+## Core Technology
+
+### 1. Graph-Native Transformation Substrate
+The platform models content evolution as a directed graph:
+- roots: ingested sources,
+- operators: atomic and composed transformers,
+- outputs: multimodal artifacts,
+- return paths: attribution and settlement edges.
+
+### 2. Multimodal GenAI Operator Layer
+Transformation edges are powered by language, image, and audio adapters, enabling:
+- text rewriting/synthesis,
+- text-to-image generation,
+- speech-to-text and text-to-speech conversion,
+- mixed-modality transformation chains.
+
+### 3. Attribution and Settlement Logic
+Consumption and reuse events are tied to graph lineage, enabling:
+- contribution-aware allocation,
+- rights-gated access across derived artifacts,
+- settlement updates aligned to transformation ancestry.
 
 <p align="center">
-  <img alt="openai" src="https://img.shields.io/badge/Models-OpenAI-412991?style=flat-square" />
-  <img alt="replicate" src="https://img.shields.io/badge/Models-Replicate-000000?style=flat-square" />
-  <img alt="stability" src="https://img.shields.io/badge/Models-Stability%20AI-111111?style=flat-square" />
-  <img alt="elevenlabs" src="https://img.shields.io/badge/Models-ElevenLabs-1A1A1A?style=flat-square" />
-  <img alt="google-imagen" src="https://img.shields.io/badge/Visual%20Assets-Gemini%20Imagen-4285F4?style=flat-square" />
+  <img src="docs/infographics/sections/core_technology_infographic_v2.png" alt="Core technology infographic" width="100%" />
 </p>
 
-## A New Creative Substrate
-Most digital content still behaves like a finished product.
-PromptArt treats content as a living medium: something that can be reinterpreted, recomposed, and redistributed in many forms while preserving who contributed and where value should flow.
+## Impact Across User Groups
 
-## Why This Creative Model Matters
-- Personalization becomes expressive, not mechanical.
-- Creative participation expands beyond technical specialists.
-- Distribution keeps creative memory instead of erasing lineage.
-- Economic outcomes follow contribution paths, not platform opacity.
+### Consumers
+- Receive richer, personalized outputs from the same source corpus.
+- Benefit from continuously improving transformation pathways.
 
-## The Ecosystem
-<p align="center">
-  <img src="docs/infographics/ecosystem_map.png" alt="PromptArt ecosystem" width="100%" />
-</p>
+### Creative Artists
+- Publish transformation operators as reusable graph components.
+- Capture downstream value when their operators are reused.
 
-PromptArt brings four groups into one creative loop:
-- audiences looking for relevance,
-- creators building transformation styles,
-- publishers contributing source material,
-- model operators powering generation.
+### Content Providers
+- Contribute source nodes that remain traceable across derivations.
+- Participate in value flow as content propagates through the graph.
 
-## The Journey
-<p align="center">
-  <img src="docs/infographics/creation_journey.png" alt="PromptArt creation journey" width="100%" />
-</p>
+### Model Providers
+- Supply core inference capabilities in language/image/audio layers.
+- Gain participation in transformation-driven economic activity.
 
-From source material to transformed output, the experience is designed as a smooth progression:
-- discover signals,
-- shape them through composable transformations,
-- publish in multiple formats,
-- feed new interactions back into the system.
+## Implementation and Architecture
 
-## The Value Loop
-<p align="center">
-  <img src="docs/infographics/value_loop.png" alt="PromptArt value loop" width="100%" />
-</p>
-
-When an artifact is consumed or reused, contribution trails are not discarded.
-They become the basis for attribution and token movement across participants, reinforcing future creation.
-
-## Implementation Architecture
-This repository already includes a working backend prototype with event-driven generation and payment logic.
+The current repository implements an AWS-based asynchronous pipeline:
 
 ```text
-API Gateway -> lambda_function_api.py -> Postgres + SQS task enqueue
-                                         |
-                                         v
-                              lambda_function_sqs.py / docker events manager
-                                         |
-                                         v
-                              DispatchSrv -> TransformSrv -> Atomic adapters
-                                         |
-                                         v
-                              docs/rights/users/nodes/task state updates
+API Gateway -> API Lambda -> Task Queue (SQS) -> Worker Dispatch -> Transformer Runtime
+                                  |                                      |
+                                  v                                      v
+                          Graph/Doc/Right State                  Multimodal Model Adapters
+                                  |                                      |
+                                  +---------- Attribution + Settlement ---+
 ```
 
-## Code Map
+<p align="center">
+  <img src="docs/infographics/sections/implementation_architecture_infographic_v2.png" alt="Implementation architecture infographic" width="100%" />
+</p>
 
-### API and Routing
-- `aws/projects/prompt-art-api/lambda_function_api.py`
-- Maps API `operationName` to handlers for users, docs, transformers, and graph feeds.
-- Handles media retrieval via `getDocMedia` and standard JSON responses for all other routes.
+### Implemented Architecture Components
+- API orchestration: `aws/projects/prompt-art-api/lambda_function_api.py`
+- Queue workers: `aws/projects/prompt-art-sqs/lambda_function_sqs.py` and Docker events manager
+- Task engine: `aws/core/paTasks.py`
+- Dispatch + charging flow: `aws/core/paDispatch.py`
+- Transformer composition/runtime: `aws/core/paTransform.py`, `aws/core/paTransformSrv.py`
+- Graph/feed management: `aws/core/paGraph.py`
+- Document rights and access control: `aws/core/paDocs.py`
+- Wallet/transfer primitives: `aws/core/paUsers.py`
+- Media persistence layer: `aws/core/paMedia.py`
+- Adapter registry (language/image/audio/source): `aws/core/paAtomic.py`
 
-### Feed Graph and Generation
-- `aws/core/paGraph.py`
-- `FeedMng` manages feed nodes, source linkage, generation cadence, and inherited fees.
-- `attach()` supports creating a companion transformer from inline config.
-
-### Task Orchestration
-- `aws/core/paTasks.py`
-- `TaskMng` stores task chains in DB, enqueues work to SQS, and resolves parent/child completion.
-- `BaseHandler` provides common task lifecycle hooks used by dispatch and transform services.
-
-### Dispatch and Charging
-- `aws/core/paDispatch.py`
-- `DispatchSrv` drives `genAndPayFeed`, `genFeed`, `procFeed`, and `applyTransformer` flows.
-- `chargeUser()` enforces fee payment before transform execution.
-- `buyDocAccess()` enforces paid access to parent/source documents.
-
-### Transformer Runtime
-- `aws/core/paTransform.py`
-- Transformer CRUD, chain composition (`_compose`, `_fromChain`), and fee aggregation (`_updateFees`).
-- `applyAsync()` starts async execution via `TransformSrv`.
-
-- `aws/core/paTransformSrv.py`
-- Prepares transformation context, executes chain branches, merges outputs, and persists generated doc content.
-
-### Document, Rights, and Royalties
-- `aws/core/paDocs.py`
-- Stores generated docs and media references.
-- Creates rights entries and recursively purchases access to parent content.
-- Applies prompt fee transfers when granting access to derived content.
-
-### Wallet and Transfer Logic
-- `aws/core/paUsers.py`
-- Balance management, transfer operations, and multi-recipient payoff attempts.
-- Supports fee maps split into `prompt_fees` and `process_fees`.
-
-### Atomic Model Connectors
-- `aws/core/paAtomic.py`
-- Registry of atomic transform functions (OpenAI, Replicate, Stability, ElevenLabs, source adapters).
-- `applyAtomic()` resolves transformer id -> callable adapter.
-
-### Storage and DB Access
-- `aws/core/paMedia.py` handles S3 media read/write and inline base64 conversion.
-- `aws/core/paDB.py` provides direct SQL wrapper methods used across managers.
-
-## Core Runtime Flow (Today)
-1. Client calls API endpoint (`/graph/{fid}/generate`, `/transformer/{tid}/apply`, etc.).
-2. API lambda validates/request-parses and dispatches to manager logic.
-3. Generation tasks are persisted in `tasks` and queued to SQS.
-4. Worker consumes task and routes by method (`genFeed`, `procFeed`, `applyTransformer`, etc.).
-5. Dispatch service checks access + user token budget, then creates transform tasks.
-6. Transform service executes atomic or chained transformers and stores output in `docs`.
-7. Rights and fee transfers are applied as docs are generated and accessed.
-
-## Data Objects in Use
-- `users`: profiles, balances, subscriptions.
-- `transformer`: transformer config and fee maps.
-- `nodes`: feed graph nodes and generation metadata.
-- `docs`: generated documents and media-linked content.
-- `rights`: doc-level access permissions.
-- `tasks`: async task-chain state.
-
-## What Is Implemented vs Next Horizon
-
-Implemented now:
-- API + async generation pipeline.
-- Feed graph generation and chaining.
-- Token charging and fee distribution primitives.
-- Access rights gating across derived documents.
-
-Next horizon:
-1. first-class provenance edges for artifact lineage,
-2. immutable ledger entries for auditable settlement,
-3. cycle-based cashback/accounting automation,
-4. stronger production hardening (secrets, query safety, idempotency).
-
-## Project Materials
-- Product deck: `docs/PromptArt_latest.pptx`
-- Deck interpretation: `docs/PPT_ANALYSIS.md`
-- Deep code analysis: `DEEP_CODE_ANALYSIS.md`
-- API draft: `aws/configs/api.yaml`
-- Visual prompt archive: `docs/infographics/infographic_prompts.txt`
+### Current Technical State
+- End-to-end async generation exists.
+- Graph-linked feed and transformer orchestration exists.
+- Rights checks and token charging exist.
+- Foundation for attribution-aware settlement exists and is extensible toward richer ledger-grade accounting.
 
 ---
 
-PromptArt explores a future where content systems learn from creative behavior and return meaningful upside to the participants who shape them.
+PromptArt positions generative media as a graph systems problem: composition, provenance, and value distribution become first-class properties of the same computational structure.

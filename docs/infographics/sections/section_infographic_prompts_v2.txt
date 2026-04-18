@@ -1,0 +1,9 @@
+motivation_vision_infographic_v2.png (900587 bytes)
+High-end technical editorial infographic illustration, dark navy background, cyan teal amber accents, clean vector geometry, rich depth, very legible structure, no logos, no watermark, NO TEXT, NO LETTERS, NO NUMBERS. Split-scene concept: left side fragmented disconnected content islands and broken paths; right side unified connected transformation graph with smooth provenance and value-return loops; include human collaboration silhouettes and multimodal content motifs.
+
+core_technology_infographic_v2.png (855556 bytes)
+High-end technical editorial infographic illustration, dark navy background, cyan teal amber accents, clean vector geometry, rich depth, very legible structure, no logos, no watermark, NO TEXT, NO LETTERS, NO NUMBERS. Three stacked conceptual layers without text labels: bottom graph substrate with source, operator, artifact node shapes; middle multimodal GenAI operator motifs for language/image/audio; top circular attribution-settlement loop with token-like particles and rights shield icon.
+
+implementation_architecture_infographic_v2.png (927843 bytes)
+High-end technical editorial infographic illustration, dark navy background, cyan teal amber accents, clean vector geometry, rich depth, very legible structure, no logos, no watermark, NO TEXT, NO LETTERS, NO NUMBERS. Cloud pipeline architecture as icon-driven flow: API entry block to queue to worker orchestration to transformer runtime to model adapter cluster to state store and settlement ledger; use arrows and grouped modules only, no embedded text.
+
