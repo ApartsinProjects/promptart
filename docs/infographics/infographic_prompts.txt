@@ -1,0 +1,9 @@
+docs\infographics\ecosystem_map.png (806372 bytes)
+PROMPT: PromptArt ecosystem infographic, clean editorial flat illustration, no text. Center: luminous creative hub. Around it four groups of people represented with distinct icon styles: audience, creators, content publishers, AI model makers. Flowing curved paths connect all groups to the center and to each other. Color direction: deep navy background, teal and cyan data streams, warm amber highlights, coral accents. Modern minimal vector aesthetic, high contrast, balanced composition, 16:9.
+
+docs\infographics\creation_journey.png (866243 bytes)
+PROMPT: Simple four-step visual journey infographic, no text, no numbers. Step 1 source stories and media entering from left as cards. Step 2 creative transformation in center as modular blocks and spark effects. Step 3 polished multi-format outputs as image, audio wave, and text cards. Step 4 community discovery and sharing on right with people and orbiting artifacts. Use soft geometric panels and directional flow, editorial vector style, cinematic but clean, palette of midnight blue, teal, mint, amber, and peach, 16:9.
+
+docs\infographics\value_loop.png (1031859 bytes)
+PROMPT: Circular value-loop infographic, no text. A ring made of glowing tokens and light particles moves through four stations: creators, content sources, AI model infrastructure, and users. Each station exchanges both creativity and value with the others, represented by arrows and orbital trails. Show fairness and reciprocity, optimistic and elegant, non-technical look, vector + soft gradients, dark background with neon teal and warm gold focal colors, 16:9.
+
